@@ -1,3 +1,4 @@
+//Đây là code của dò line cho 
 #include <avr/interrupt.h>
 #include <EEPROM.h>
 #define RDIR 11     // chiều quay động cơ phải
