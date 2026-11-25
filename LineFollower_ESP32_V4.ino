@@ -1,3 +1,4 @@
+// File nhóm đang sử dụng để chạy
 /*
  * ===================================================================
  *  XE DÒ LINE - ESP32 DEV MODULE (v4 - bản đã rà soát & sửa lỗi từ v3)
