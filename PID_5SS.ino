@@ -1,4 +1,4 @@
-
+//ngu như bò 
 #include <avr/interrupt.h>
 #include <EEPROM.h>
 #define RDIR 11  // chiều quay động cơ phải
