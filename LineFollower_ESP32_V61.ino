@@ -1,4 +1,4 @@
-// V6.1 BOOT-button edition: short press/release starts after 3s, press during motion stops.
+// V6.1 BOOT calibration edition: short = start, 1-5s = calibrate, >=5s = UDP; press while active = stop.
 /* V6.1 experimental control candidate, based on V6 commit 13cac4d.
  * Ideas independently implemented: Pololu 3pi+ LineFollowerPID, QTR Sensors,
  * Zumo MazeSolver (slow approach, overshoot/exit check); no copied source.
@@ -25,14 +25,14 @@ const char* PC_IP = "192.168.1.104";
 #endif
 const uint16_t PC_PORT = 5005;
 const uint8_t DUMP_BTN = 0; // Built-in BOOT, active LOW. Never hold during reset.
-const uint32_t BUTTON_DEBOUNCE_MS=30, BUTTON_LONG_MS=1000, BUTTON_START_DELAY_MS=3000;
+const uint32_t BUTTON_DEBOUNCE_MS=30, BUTTON_CAL_MS=1000, BUTTON_UDP_MS=5000, BUTTON_START_DELAY_MS=3000;
 const bool BLACK_LINE = true;
 const uint8_t NUM_SENSORS = 8;
 const uint8_t SENSOR_PINS[NUM_SENSORS] = {39,33,34,25,35,26,32,27};
 const uint8_t EN_L=21, IN1_L=23, IN2_L=22, EN_R=5, IN1_R=18, IN2_R=19;
 const bool INVERT_LEFT=false, INVERT_RIGHT=true;
 const uint8_t TRIG_PIN=12, ECHO_PIN=13, ENC_L_A=17, ENC_L_B=16, ENC_R_A=4, ENC_R_B=15;
-const uint32_t PWM_FREQ=5000, LOOP_US=2000, CAL_TIME_MS=4000;
+const uint32_t PWM_FREQ=5000, LOOP_US=2000, CAL_TIME_MS=8000;
 const uint8_t PWM_BITS=8;
 const uint32_t LOST_GRACE_MS=40, SETTLE_MS=300, TURN_MAX_MS=1800, CORNER_HOLD_MS=80;
 const uint32_t SEARCH_HARD_MAX_MS=5000, ARM_TIMEOUT_MS=2500, SONAR_STALE_MS=250;
@@ -217,13 +217,13 @@ void startCalibration(){
   if(!prefs.begin(NVS_NS,false)){stopState(FAULT,"NVS ERROR");return;}
   bool ok=!prefs.isKey("cal")||prefs.remove("cal");prefs.end();if(!ok){stopState(FAULT,"NVS REMOVE ERROR");return;}
   for(int i=0;i<8;i++){calMin[i]=4095;calMax[i]=0;}
-  calStartMs=millis();state=CALIBRATING;Serial.println("CAL: move sensor across black and white for 4s; x cancels");
+  calStartMs=millis();state=CALIBRATING;Serial.println("CAL: move sensor across black and white for 8s; BOOT or x cancels");
 }
 void calibrationStep(uint32_t now){
   uint16_t a[8];readRaw(a);for(int i=0;i<8;i++){calMin[i]=min(calMin[i],a[i]);calMax[i]=max(calMax[i],a[i]);}
   if(now-calStartMs<CAL_TIME_MS)return;
   for(int i=0;i<8;i++)Serial.printf("S%d min=%u max=%u\n",i+1,calMin[i],calMax[i]);
-  calibrated=calValid()&&saveCal();stopState(calibrated?IDLE:FAULT,calibrated?"CAL OK; s to arm":"CAL FAILED; retry c");
+  calibrated=calValid()&&saveCal();stopState(calibrated?IDLE:FAULT,calibrated?"CAL OK; short BOOT to start":"CAL FAILED; BOOT to acknowledge, then hold 1-5s to retry");
 }
 int readPosition(bool &onLine){
   uint16_t raw[8];readRaw(raw);int32_t sum=0,wsum=0;int maxV=0;
@@ -593,9 +593,14 @@ void serviceBootButton(uint32_t now){
         const bool act=idleGesture&&!blocked&&state==IDLE;
         idleGesture=false;blocked=false;
         if(act){
-          if(now-pressedAt>=BUTTON_LONG_MS){dumpLogOverUdp();return;}
+          const uint32_t held=now-pressedAt;
+          if(held>=BUTTON_UDP_MS){dumpLogOverUdp();return;}
+          if(held>=BUTTON_CAL_MS){
+            if(!pwmOK){stopState(FAULT,"BOOT CAL denied: PWM init failed");return;}
+            startCalibration();return;
+          }
           if(!pwmOK||!calibrated||!calValid()){
-            stopState(FAULT,"BOOT START denied: calibration/PWM");return;
+            stopState(FAULT,"BOOT START denied: calibration/PWM; acknowledge then hold BOOT to calibrate");return;
           }
           brakeMotors();buttonStartMs=now;state=START_DELAY;
           Serial.println("BOOT START: 3s countdown; press again to cancel");
@@ -618,7 +623,7 @@ void setup(){
   attachInterrupt(digitalPinToInterrupt(ENC_L_A),isrL,RISING);attachInterrupt(digitalPinToInterrupt(ENC_R_A),isrR,RISING);
   loadParams();loadCal();readEnc(lastEncL,lastEncR);lastEncMs=millis();lastTickUs=micros();
   if(!pwmOK){stopState(FAULT,"PWM init failed");return;}
-  Serial.println(calibrated?"V6.1 BUTTON READY; BOOT short or s to start":"V6.1 BUTTON READY; c to calibrate first");printParams();
+  Serial.println(calibrated?"V6.1 READY; BOOT short=start, hold 1-5s=cal, >=5s=UDP":"V6.1 READY; hold BOOT 1-5s and release to calibrate");printParams();
 }
 void loop(){
   static uint32_t lastDbg=0;
