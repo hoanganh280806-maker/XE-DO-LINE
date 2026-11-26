@@ -1,25 +1,14 @@
-/* code đi thẳng và rẽ
+/* code đi thẳng và rẽ + Ghi log tốc độ Encoder & Gửi UDP sang Python (VS Code)
  * ===================================================================
- *  XE DÒ LINE - ESP32 DEV MODULE (v5)
+ *  XE DÒ LINE - ESP32 DEV MODULE (v5 + UDP Telemetry Logger)
  *  QTR-8A (analog) + HC-SR04 + L298N + 2x Encoder GA25 (Pha A & B)
  *
- *  Máy trạng thái khi chạy:
- *    FOLLOW  : bám line bằng PD (đạo hàm có lọc, giảm tốc khi lệch)
- *    ADVANCE : thấy góc gắt -> đi thẳng 'tadv' ms để trục bánh tới góc,
- *              rồi kiểm tra phía trước: còn line => ngã rẽ/cua thoải (đi thẳng),
- *              hết line => góc 90 độ
- *    TURN    : xoay tại chỗ về phía góc, giảm tốc khi gần giữa, dừng khi line về giữa
- *    SEARCH  : mất line -> xoay về phía line thấy lần cuối, tối đa MỘT VÒNG;
- *              thấy line thì xoay tới khi line về giữa; hết vòng không thấy -> dừng
- *    Sau TURN/SEARCH có giai đoạn "settle": tăng tốc dần để bám lại line êm, không văng.
- *
- *  SƠ ĐỒ CHÂN:
- *  - L298N (Bánh TRÁI - OUT3/OUT4) : ENB->21, IN3->23, IN4->22
- *  - L298N (Bánh PHẢI - OUT1/OUT2) : ENA->5,  IN1->18, IN2->19
- *  - Encoder TRÁI                  : A->17, B->16
- *  - Encoder PHẢI                  : A->4,  B->2   (GPIO2 là chân strapping!)
- *  - QTR-8A (OUT1..OUT8)           : 27, 32, 26, 35, 25, 34, 33, 39
- *  - HC-SR04                       : TRIG->12 (strapping!), ECHO->13 (chia áp 5V->3.3V)
+ *  QUY TRÌNH GHI & XUẤT DỮ LIỆU:
+ *   1. Cắm đủ 8 mắt QTR-8A, bật nguồn (hoặc gửi 's') -> xe chạy & tự lưu tốc độ
+ *      2 encoder (speedL, speedR) mỗi 50ms vào RAM (tối đa 4000 mẫu = 200 giây).
+ *   2. Khi xe dừng (gửi 'x' hoặc tự dừng khi mất line), rút 3 dây ADC2 (25, 26, 27).
+ *   3. Chạy script Python trên VS Code trước, sau đó gửi lệnh 'udp' qua Serial
+ *      (hoặc nhấn giữ nút BOOT trên ESP32 khoảng 1 giây) để bắn toàn bộ log qua UDP.
  *
  *  LỆNH SERIAL (115200, Newline):
  *    c : hiệu chuẩn (4s)    s : chạy    x : dừng    p : in thông số
@@ -29,13 +18,23 @@
  *    corner 0|1             : tắt/bật xử lý góc gắt
  *    tfull 1600             : thời gian (ms) xe xoay đủ MỘT VÒNG tại chỗ
  *    tcnt 0                 : số xung encoder cho một vòng (0 = dùng thời gian tfull)
- *    spin                   : xoay thử 'tfull' ms, in số xung encoder (để chỉnh tfull/tcnt)
+ *    spin                   : xoay thử 'tfull' ms, in số xung encoder
+ *    udp / log              : gửi dữ liệu log qua Wi-Fi UDP / xem số mẫu đã lưu
  *    test / raw / dbg       : thử động cơ / in ADC thô / bật tắt debug
  *    save / clear           : lưu thông số vào flash / xóa dữ liệu đã lưu
  */
 
 #include <Arduino.h>
 #include <Preferences.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
+
+// ======================= CẤU HÌNH WIFI / UDP ========================
+const char*    WIFI_SSID = "SiCoLab_5G";     // <-- Đổi tên Wi-Fi (hoặc Hotspot laptop/điện thoại)
+const char*    WIFI_PASS = "SiCoLabb";        // <-- Đổi mật khẩu Wi-Fi
+const char*    PC_IP     = "192.168.1.104";        // <-- Đổi thành IPv4 của máy tính chạy VS Code
+const uint16_t PC_PORT   = 5005;                   // Cổng UDP nhận trên Python
+const uint8_t  DUMP_BTN  = 0;                      // Nút BOOT trên ESP32 (nhấn giữ 1s khi xe dừng để gửi UDP)
 
 // ============================ CẤU HÌNH ==============================
 #define AUTO_START      true     // true: bật nguồn là tự chạy (không cần Serial)
@@ -53,7 +52,7 @@ const uint8_t SENSOR_PINS[NUM_SENSORS] = {39,33,34,25,35,26,32,27};
 const uint8_t EN_L = 21, IN1_L = 23, IN2_L = 22;   // Động cơ TRÁI (ENB, IN3, IN4)
 const uint8_t EN_R = 5,  IN1_R = 18, IN2_R = 19;   // Động cơ PHẢI (ENA, IN1, IN2)
 const bool INVERT_LEFT  = false;                   // đổi thành true nếu bánh trái quay ngược
-const bool INVERT_RIGHT = true;                   // đổi thành true nếu bánh phải quay ngược
+const bool INVERT_RIGHT = true;                    // đổi thành true nếu bánh phải quay ngược
 
 // HC-SR04
 const uint8_t TRIG_PIN = 12, ECHO_PIN = 13;
@@ -133,6 +132,116 @@ void IRAM_ATTR isrR() {
   else                      encR++;
 }
 #endif
+
+// ---- Bộ đệm lưu Log vận tốc Encoder trong RAM (mỗi 50ms) ----
+struct __attribute__((packed)) LogSample {
+  uint32_t tMs;      // Thời gian kể từ lúc bắt đầu chạy (ms)
+  int16_t  spdL;     // Vận tốc encoder trái (xung / 50ms)
+  int16_t  spdR;     // Vận tốc encoder phải (xung / 50ms)
+  int16_t  err;      // Sai số dò line (-3500..3500)
+  uint8_t  mode;     // Trạng thái chạy (0:FOLLOW, 1:ADVANCE, 2:TURN, 3:SEARCH)
+};
+
+const size_t MAX_LOG_SAMPLES = 4000;               // 4000 * 50ms = 200 giây chạy (~44KB RAM)
+LogSample    logBuf[MAX_LOG_SAMPLES];
+size_t       logCount   = 0;
+uint32_t     runStartMs = 0;
+WiFiUDP      udp;
+
+void clearLog() {
+  logCount = 0;
+  runStartMs = millis();
+}
+
+void recordLogSample(uint32_t nowMs) {
+  if (state != RUNNING) return;
+  if (logCount >= MAX_LOG_SAMPLES) return;
+
+  LogSample &s = logBuf[logCount++];
+  s.tMs = nowMs - runStartMs;
+#if USE_ENCODER
+  s.spdL = (int16_t)constrain(speedL, -32768, 32767);
+  s.spdR = (int16_t)constrain(speedR, -32768, 32767);
+#else
+  s.spdL = 0;
+  s.spdR = 0;
+#endif
+  s.err  = (int16_t)constrain((int)lastErr, -32768, 32767);
+  s.mode = (uint8_t)rmode;
+}
+
+void dumpLogOverUdp() {
+  state = IDLE;
+  rmode = RM_FOLLOW;
+  brakeMotors();
+
+  if (logCount == 0) {
+    Serial.println(F("Chua co du lieu log nao trong RAM! Hay cho xe chay truoc."));
+    return;
+  }
+
+  Serial.printf("Chuan bi gui %u mau qua UDP toi %s:%u ...\n",
+                (unsigned)logCount, PC_IP, PC_PORT);
+  Serial.println(F("Luu y: Hay dam bao da rut 3 day ADC2 (GPIO 25, 26, 27) truoc khi bat Wi-Fi!"));
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  uint32_t t0 = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - t0 < 15000) {
+    delay(250);
+    Serial.print('.');
+  }
+  Serial.println();
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println(F("Ket noi Wi-Fi THAT BAI! Kiem tra lai WIFI_SSID / WIFI_PASS."));
+    WiFi.disconnect(true);
+    WiFi.mode(WIFI_OFF);
+    return;
+  }
+
+  Serial.print(F("Da ket noi Wi-Fi. IP xe: "));
+  Serial.println(WiFi.localIP());
+
+  udp.begin(PC_PORT);
+
+  // Gửi gói báo bắt đầu kèm header CSV
+  for (int k = 0; k < 3; k++) {
+    udp.beginPacket(PC_IP, PC_PORT);
+    udp.printf("START,%u\n", (unsigned)logCount);
+    udp.endPacket();
+    delay(20);
+  }
+
+  // Gửi từng mẫu dữ liệu
+  for (size_t i = 0; i < logCount; i++) {
+    const LogSample &s = logBuf[i];
+    udp.beginPacket(PC_IP, PC_PORT);
+    udp.printf("DATA,%u,%lu,%d,%d,%d,%u\n",
+               (unsigned)i,
+               (unsigned long)s.tMs,
+               (int)s.spdL,
+               (int)s.spdR,
+               (int)s.err,
+               (unsigned)s.mode);
+    udp.endPacket();
+    delay(3); // giãn 3ms mỗi gói để tránh tràn buffer Wi-Fi / UDP
+  }
+
+  // Gửi gói báo kết thúc
+  for (int k = 0; k < 3; k++) {
+    udp.beginPacket(PC_IP, PC_PORT);
+    udp.printf("END,%u\n", (unsigned)logCount);
+    udp.endPacket();
+    delay(20);
+  }
+
+  udp.stop();
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+  Serial.println(F("Da gui xong toan bo log qua UDP va tat Wi-Fi!"));
+}
 
 // ---- HC-SR04 non-blocking ----
 volatile uint32_t echoRiseUs  = 0;
@@ -242,7 +351,6 @@ void updateObstacle(uint32_t ms) {
 }
 
 // ============================== QTR-8A ================================
-// Đọc bỏ 1 lần đầu (xả điện tích còn lại từ kênh ADC trước), rồi lấy trung bình 2 lần
 uint16_t readOne(uint8_t pin) {
   analogRead(pin);
   return (analogRead(pin) + analogRead(pin)) / 2;
@@ -252,7 +360,6 @@ void readRaw(uint16_t *raw) {
   for (int i = 0; i < NUM_SENSORS; i++) raw[i] = readOne(SENSOR_PINS[i]);
 }
 
-// ---- Lưu/đọc hiệu chuẩn và thông số vào flash (còn nguyên khi mất điện) ----
 Preferences prefs;
 
 void saveCal() {
@@ -327,7 +434,7 @@ void runCalibration(bool spin) {
                   calMin[i], calMax[i], bad ? "  <-- DAI HEP, kiem tra day/khoang cach/quet lai" : "");
   }
   calibrated = true;
-  saveCal();                                       // nhớ lại cho lần bật nguồn sau
+  saveCal();
   Serial.println(ok ? F("Xong. Gui 's' de chay.")
                     : F("Xong nhung co cam bien loi (xem tren). Nen gui 'c' lai."));
 }
@@ -343,7 +450,7 @@ int readPosition(bool &onLine) {
     if (range > 50) {
       v = ((int)raw[i] - (int)calMin[i]) * 1000 / range;
       v = constrain(v, 0, 1000);
-      if (!BLACK_LINE) v = 1000 - v;               // chỉ đảo khi cảm biến có dải hợp lệ
+      if (!BLACK_LINE) v = 1000 - v;
     }
     sv[i] = v;
     if (v > maxV) maxV = v;
@@ -356,7 +463,7 @@ int readPosition(bool &onLine) {
   if (!onLine) return 3500;
   int pos = (int)(wsum / sum);
   int e = pos - 3500;
-  if (e < -400)      lastSide = -1;                // chỉ cập nhật khi lệch rõ, tránh nhảy qua lại ở giữa
+  if (e < -400)      lastSide = -1;
   else if (e > 400)  lastSide = +1;
   return pos;
 }
@@ -370,7 +477,6 @@ void resetPid() {
   havePrev = false;
 }
 
-// Tiến độ xoay (xung encoder trung bình hai bánh) kể từ lúc bắt đầu SEARCH
 int32_t spinProgress() {
 #if USE_ENCODER
   noInterrupts(); int32_t a = encL, b = encR; interrupts();
@@ -387,7 +493,6 @@ bool searchFullTurnDone(uint32_t nowMs) {
   return nowMs - modeStartMs >= (uint32_t)fullTurnMs;
 }
 
-// Quay lại FOLLOW và tăng tốc dần để bám lại line êm
 void startSettle(uint32_t nowMs) {
   rmode = RM_FOLLOW;
   settleStartMs = nowMs;
@@ -399,7 +504,7 @@ void startSettle(uint32_t nowMs) {
 void startSearch(uint32_t nowMs) {
   rmode = RM_SEARCH;
   modeStartMs = nowMs;
-  turnDir = (lastSide >= 0) ? +1 : -1;             // xoay về phía line thấy lần cuối (chưa biết -> phải)
+  turnDir = (lastSide >= 0) ? +1 : -1;
   wasLost = false;
 #if USE_ENCODER
   noInterrupts(); searchEncL0 = encL; searchEncR0 = encR; interrupts();
@@ -416,8 +521,19 @@ void startRun() {
   wasLost = false;
   cornerCnt = 0;
   cornerHoldUntil = 0;
-  settleStartMs = millis();                        // xuất phát êm
+  settleStartMs = millis();
   obsPrinted = false;
+
+#if USE_ENCODER
+  noInterrupts();
+  lastEncL = encL;
+  lastEncR = encR;
+  interrupts();
+  speedL = 0;
+  speedR = 0;
+#endif
+  clearLog();                                      // Xóa log cũ và bắt đầu ghi log mới
+
   state = RUNNING;
 }
 
@@ -427,7 +543,6 @@ void controlStep() {
   uint32_t nowMs = millis();
   float err = (float)pos - 3500.0f;
 
-  // ---- Vật cản: phanh, hủy mọi thao tác dở dang ----
   if (obstacle != obsPrinted) {
     obsPrinted = obstacle;
     if (obstacle) Serial.printf("VAT CAN: %.0f cm -> phanh\n", distCm);
@@ -441,16 +556,15 @@ void controlStep() {
     return;
   }
 
-  // ---- ADVANCE: đi thẳng cho trục bánh tới góc, rồi quyết định ----
   if (rmode == RM_ADVANCE) {
     setMotors(TURN_FWD_SPEED, TURN_FWD_SPEED);
     if (nowMs - modeStartMs >= (uint32_t)turnAdvMs) {
       bool frontOn = sv[3] > 400 || sv[4] > 400;
-      if (frontOn) {                               // phía trước vẫn còn line: không phải góc cụt
+      if (frontOn) {
         cornerHoldUntil = nowMs + CORNER_HOLD_MS;
         startSettle(nowMs);
         dbgEvent(F("NGA RE/CUA THOAI -> di thang"));
-      } else {                                     // hết line: góc 90 độ -> xoay
+      } else {
         rmode = RM_TURN;
         modeStartMs = nowMs;
         dbgEvent(F("GOC 90 -> TURN"));
@@ -459,7 +573,6 @@ void controlStep() {
     return;
   }
 
-  // ---- TURN: xoay tại chỗ tới khi line về giữa ----
   if (rmode == RM_TURN) {
     uint32_t t = nowMs - modeStartMs;
     if (onLine && fabsf(err) < CENTER_BAND && t > 40) {
@@ -468,40 +581,38 @@ void controlStep() {
       return;
     }
     if (t > TURN_MAX_MS) { startSearch(nowMs); return; }
-    int spd = (onLine && fabsf(err) < 1800.0f) ? (turnSpeed * 6 / 10) : turnSpeed;   // gần giữa thì chậm lại, tránh lố
+    int spd = (onLine && fabsf(err) < 1800.0f) ? (turnSpeed * 6 / 10) : turnSpeed;
     setMotors(turnDir * spd, -turnDir * spd);
     return;
   }
 
-  // ---- SEARCH: xoay tối đa một vòng tìm line ----
   if (rmode == RM_SEARCH) {
-    if (onLine && fabsf(err) < CENTER_BAND) {      // line đã về giữa mũi xe
+    if (onLine && fabsf(err) < CENTER_BAND) {
       startSettle(nowMs);
       dbgEvent(F("SEARCH: tim thay line"));
       return;
     }
-    if (searchFullTurnDone(nowMs)) {               // đủ một vòng mà không thấy
+    if (searchFullTurnDone(nowMs)) {
       brakeMotors();
       state = IDLE;
       rmode = RM_FOLLOW;
-      Serial.println(F("KHONG TIM THAY LINE sau 1 vong -> DUNG. Dat xe len line, gui 's'."));
+      Serial.printf("KHONG TIM THAY LINE sau 1 vong -> DUNG (da luu %u mau). Rut 3 day ADC2 roi gui 'udp'.\n",
+                    (unsigned)logCount);
       return;
     }
-    int spd = onLine ? (lostSpin * 6 / 10) : lostSpin;   // đã thấy line (chưa giữa) thì xoay chậm
+    int spd = onLine ? (lostSpin * 6 / 10) : lostSpin;
     setMotors(turnDir * spd, -turnDir * spd);
     return;
   }
 
-  // ================= FOLLOW =================
   if (!onLine) {
     if (!wasLost) { wasLost = true; lostSinceMs = nowMs; }
-    if (nowMs - lostSinceMs < LOST_GRACE_MS) return;     // mất thoáng qua: giữ lệnh motor cũ
+    if (nowMs - lostSinceMs < LOST_GRACE_MS) return;
     startSearch(nowMs);
     return;
   }
   wasLost = false;
 
-  // Phát hiện góc gắt: 2 cảm biến ngoài cùng MỘT bên đen, bên kia trắng
   if (cornerMode && nowMs >= cornerHoldUntil) {
     bool leftHit  = sv[0] > CORNER_TH && sv[1] > CORNER_TH;
     bool rightHit = sv[7] > CORNER_TH && sv[6] > CORNER_TH;
@@ -523,16 +634,15 @@ void controlStep() {
     }
   }
 
-  // PD bám line
   if (!havePrev) { lastErr = err; havePrev = true; }
   integral = constrain(integral + err, -20000.0f, 20000.0f);
   float deriv = err - lastErr;
   lastErr = err;
-  derivFilt += DERIV_ALPHA * (deriv - derivFilt);  // lọc thông thấp, giảm giật do lượng tử ADC
+  derivFilt += DERIV_ALPHA * (deriv - derivFilt);
 
   float corr = Kp * err + Ki * integral + Kd * derivFilt;
 
-  float slow = 1.0f - 0.50f * fabsf(err) / 3500.0f;      // lệch nhiều thì giảm tốc
+  float slow = 1.0f - 0.50f * fabsf(err) / 3500.0f;
   float ramp = 1.0f;
   uint32_t sinceSettle = nowMs - settleStartMs;
   if (sinceSettle < SETTLE_MS) ramp = 0.6f + 0.4f * (float)sinceSettle / (float)SETTLE_MS;
@@ -559,7 +669,17 @@ void processCommand(char *buf) {
     else { startRun(); Serial.println(F("RUN")); }
     return;
   }
-  else if (!strcmp(buf, "x"))   { state = IDLE; rmode = RM_FOLLOW; brakeMotors(); Serial.println(F("STOP")); return; }
+  else if (!strcmp(buf, "x"))   {
+    state = IDLE; rmode = RM_FOLLOW; brakeMotors();
+    Serial.printf("STOP (da luu %u mau log). Rut 3 day ADC2 (25,26,27) roi gui 'udp' de xuat du lieu.\n",
+                  (unsigned)logCount);
+    return;
+  }
+  else if (!strcmp(buf, "udp")) { dumpLogOverUdp(); return; }
+  else if (!strcmp(buf, "log")) {
+    Serial.printf("So mau log hien tai: %u / %u\n", (unsigned)logCount, (unsigned)MAX_LOG_SAMPLES);
+    return;
+  }
   else if (!strcmp(buf, "dbg")) {
     debugOn = !debugOn;
     Serial.println(debugOn ? F("DEBUG ON") : F("DEBUG OFF"));
@@ -573,7 +693,7 @@ void processCommand(char *buf) {
     Serial.println(F("Da xoa hieu chuan va thong so da luu."));
     return;
   }
-  else if (!strcmp(buf, "test")) {                 // thử từng động cơ, mỗi bánh quay tới 1 giây
+  else if (!strcmp(buf, "test")) {
     state = IDLE;
     Serial.println(F("Test: banh TRAI quay toi..."));
     setMotors(150, 0); delay(1000);
@@ -583,7 +703,7 @@ void processCommand(char *buf) {
     Serial.println(F("Xong test."));
     return;
   }
-  else if (!strcmp(buf, "spin")) {                 // xoay phải 'tfull' ms: quan sát xem có đủ 1 vòng không
+  else if (!strcmp(buf, "spin")) {
     state = IDLE;
     Serial.printf("Spin %d ms o toc do lost=%d ...\n", fullTurnMs, lostSpin);
 #if USE_ENCODER
@@ -601,7 +721,7 @@ void processCommand(char *buf) {
     Serial.println(F("Xe xoay thieu -> tang tfull, xoay thua -> giam tfull."));
     return;
   }
-  else if (!strcmp(buf, "raw")) {                  // in giá trị ADC thô của 8 cảm biến
+  else if (!strcmp(buf, "raw")) {
     uint16_t raw[NUM_SENSORS];
     readRaw(raw);
     for (int i = 0; i < NUM_SENSORS; i++) Serial.printf("%4u ", raw[i]);
@@ -638,7 +758,7 @@ void handleSerial() {
   while (Serial.available()) {
     char c = (char)Serial.read();
     if (c == '\n' || c == '\r') {
-      if (overflow) {                              // dòng quá dài: bỏ cả dòng, không xử lý phần đuôi
+      if (overflow) {
         Serial.println(F("Lenh qua dai"));
         overflow = false;
       } else if (cmdLen) {
@@ -658,6 +778,9 @@ void setup() {
   Serial.begin(115200);
   delay(300);
 
+  WiFi.mode(WIFI_OFF);                             // Tắt hẳn Wi-Fi khi chạy để không xung đột ADC2
+
+  pinMode(DUMP_BTN, INPUT_PULLUP);
   pinMode(IN1_L, OUTPUT); pinMode(IN2_L, OUTPUT);
   pinMode(IN1_R, OUTPUT); pinMode(IN2_R, OUTPUT);
   pwmBegin(EN_L, 0);
@@ -686,13 +809,11 @@ void setup() {
   loadParams();
   bool haveCal = loadCal();
 
-  Serial.println(F("San sang. 'c' = hieu chuan, 's' = chay, 'x' = dung, 'save' = luu thong so."));
+  Serial.println(F("San sang. 'c' = hieu chuan, 's' = chay, 'x' = dung, 'udp' = gui log qua Wi-Fi."));
   printParams();
 
 #if AUTO_START
-  // Bật nguồn là tự chạy: đặt xe lên line, chờ START_DELAY_MS rồi xuất phát
   if (!haveCal) {
-    // Không tự hiệu chuẩn: chỉ hiệu chuẩn khi người dùng gõ 'c'
     Serial.println(F("Chua co du lieu hieu chuan trong flash -> KHONG tu chay. Gui 'c' de hieu chuan."));
   } else {
     Serial.println(F("Da nap hieu chuan tu flash."));
@@ -709,7 +830,24 @@ void setup() {
 
 void loop() {
   static uint32_t tNext = 0, tEnc = 0, tDbg = 0;
+  static uint32_t btnHoldMs = 0;
   handleSerial();
+
+  // Nếu xe đang dừng (IDLE) và người dùng nhấn giữ nút BOOT (GPIO0) >= 1000ms -> gửi UDP
+  if (state == IDLE) {
+    if (digitalRead(DUMP_BTN) == LOW) {
+      if (btnHoldMs == 0) btnHoldMs = millis();
+      else if (millis() - btnHoldMs >= 1000) {
+        btnHoldMs = 0;
+        dumpLogOverUdp();
+        return;
+      }
+    } else {
+      btnHoldMs = 0;
+    }
+  } else {
+    btnHoldMs = 0;
+  }
 
   if (state == CALIBRATING) {
     runCalibration(AUTO_CAL_SPIN);
@@ -730,6 +868,7 @@ void loop() {
     speedL = a - lastEncL; speedR = b - lastEncR;
     lastEncL = a; lastEncR = b;
     tEnc = ms;
+    recordLogSample(ms);                           // Lưu vận tốc thực 2 bánh vào RAM
   }
 #endif
 
@@ -738,7 +877,7 @@ void loop() {
     controlStep();
   } else if (debugOn && calibrated) {
     bool dummy;
-    readPosition(dummy);                           // cho phép xem cảm biến khi đang đứng yên
+    readPosition(dummy);
   }
 
   if (debugOn && ms - tDbg >= 100) {
