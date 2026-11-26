@@ -1,4 +1,4 @@
-/*
+/* code đi thẳng và rẽ
  * ===================================================================
  *  XE DÒ LINE - ESP32 DEV MODULE (v5)
  *  QTR-8A (analog) + HC-SR04 + L298N + 2x Encoder GA25 (Pha A & B)
