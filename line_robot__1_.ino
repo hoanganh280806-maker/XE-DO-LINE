@@ -1,3 +1,4 @@
+//Đây là file code của nhóm Tú Anh , vừa chạy chiều thứ 7 , khá ổn rồi 
 /*
 =====================================================================
   ROBOT DÒ LINE TỐC ĐỘ CAO  -  ESP32-S3 + L298N + mảng 8 cảm biến

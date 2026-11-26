@@ -1,0 +1,2526 @@
+{
+  "format": "kiungo-lab-session",
+  "version": 2,
+  "generator": "Kiungo Engineering Lab",
+  "session": {
+    "id": "lab-mww7r7rf-cc106c4f",
+    "name": "ESP32 DevKit: Blink over Wi-Fi",
+    "projectId": null,
+    "createdAt": "2026-11-25T14:23:09.579Z",
+    "updatedAt": "2026-11-25T15:43:01.376Z",
+    "nodes": [
+      {
+        "id": "n-mww7r7rf-802576cd",
+        "partId": "esp32",
+        "label": "ESP32",
+        "x": 32,
+        "y": 192,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7u1bp-adc09560",
+        "partId": "line-array",
+        "label": "Line array",
+        "x": -272,
+        "y": 296,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7u7s2-df75555b",
+        "partId": "l298n",
+        "label": "L298N",
+        "x": 392,
+        "y": 120,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7ui0g-1ce00264",
+        "partId": "hc-sr04",
+        "label": "HC-SR04",
+        "x": -280,
+        "y": 0,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7uzza-0ba0413d",
+        "partId": "micro-gear-motor",
+        "label": "N20 motor",
+        "x": 592,
+        "y": 432,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7w89m-9fa20bef",
+        "partId": "lipo-3s",
+        "label": "3S LiPo",
+        "x": 104,
+        "y": 0,
+        "mode": "virtual"
+      },
+      {
+        "id": "n-mww7wx89-2b51053a",
+        "partId": "micro-gear-motor",
+        "label": "N20 motor 2",
+        "x": 192,
+        "y": 432,
+        "mode": "virtual"
+      }
+    ],
+    "wires": [
+      {
+        "id": "w-mww9ln7t-5ffc48ea",
+        "from": {
+          "node": "n-mww7w89m-9fa20bef",
+          "pin": "POS"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "VS"
+        }
+      },
+      {
+        "id": "w-mww9n4cz-4a721e8f",
+        "from": {
+          "node": "n-mww7w89m-9fa20bef",
+          "pin": "NEG"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "GND"
+        }
+      },
+      {
+        "id": "w-mww9o57j-69a225f5",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "VIN"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "5V"
+        }
+      },
+      {
+        "id": "w-mww9pwj1-ad050d36",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D5"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "ENA"
+        }
+      },
+      {
+        "id": "w-mww9qb62-c9f9bce3",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D18"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "IN1"
+        }
+      },
+      {
+        "id": "w-mww9qet4-c968ddf9",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D19"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "IN2"
+        }
+      },
+      {
+        "id": "w-mww9rqe0-6eba66a3",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D23"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "IN3"
+        }
+      },
+      {
+        "id": "w-mww9sdp6-6a87a86f",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D22"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "IN4"
+        }
+      },
+      {
+        "id": "w-mww9sope-a911b765",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D21"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "ENB"
+        }
+      },
+      {
+        "id": "w-mww9wmco-b4a9780b",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D17"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "C1"
+        }
+      },
+      {
+        "id": "w-mww9wsqv-579826fb",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D16"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "C2"
+        }
+      },
+      {
+        "id": "w-mww9zlci-5f289fc7",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "3V3"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "ENC_VCC"
+        }
+      },
+      {
+        "id": "w-mww9zqtw-11663a99",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "GND2"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "ENC_GND"
+        }
+      },
+      {
+        "id": "w-mww9zzgu-a8455a69",
+        "from": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "OUT3"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "M1"
+        }
+      },
+      {
+        "id": "w-mwwa02uo-1c9114bf",
+        "from": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "OUT4"
+        },
+        "to": {
+          "node": "n-mww7uzza-0ba0413d",
+          "pin": "M2"
+        }
+      },
+      {
+        "id": "w-mwwa4v0k-f78d224b",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "ENC_VCC"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "3V3"
+        }
+      },
+      {
+        "id": "w-mwwa4y96-b7c4f3ff",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "ENC_GND"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "GND2"
+        }
+      },
+      {
+        "id": "w-mwwa53ck-42b103b3",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "M1"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "OUT1"
+        }
+      },
+      {
+        "id": "w-mwwa5aiw-537bdbb4",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "M2"
+        },
+        "to": {
+          "node": "n-mww7u7s2-df75555b",
+          "pin": "OUT2"
+        }
+      },
+      {
+        "id": "w-mwwa5ed2-00072c78",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "C1"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D4"
+        }
+      },
+      {
+        "id": "w-mwwa5ib7-52dc766b",
+        "from": {
+          "node": "n-mww7wx89-2b51053a",
+          "pin": "C2"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D2"
+        }
+      },
+      {
+        "id": "w-mwwa6do4-9b1d617b",
+        "from": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D12"
+        },
+        "to": {
+          "node": "n-mww7ui0g-1ce00264",
+          "pin": "TRIG"
+        }
+      },
+      {
+        "id": "w-mwwa6je0-16d2203f",
+        "from": {
+          "node": "n-mww7ui0g-1ce00264",
+          "pin": "ECHO"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D13"
+        }
+      },
+      {
+        "id": "w-mwwa6p5w-13d3c132",
+        "from": {
+          "node": "n-mww7ui0g-1ce00264",
+          "pin": "GND"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "GND1"
+        }
+      },
+      {
+        "id": "w-mwwa7m4n-eb7e9cc6",
+        "from": {
+          "node": "n-mww7ui0g-1ce00264",
+          "pin": "VCC"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "3V3"
+        }
+      },
+      {
+        "id": "w-mwwab83i-84f9f8f6",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "VCC"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "3V3"
+        }
+      },
+      {
+        "id": "w-mwwabfpj-7db1a751",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "GND"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "GND1"
+        }
+      },
+      {
+        "id": "w-mwwadf1x-4b2c95a6",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT1"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D27"
+        }
+      },
+      {
+        "id": "w-mwwafbe7-972104cb",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT2"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D32"
+        }
+      },
+      {
+        "id": "w-mwwafu59-db368f4b",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT3"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D26"
+        }
+      },
+      {
+        "id": "w-mwwag6el-91052810",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT4"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D35"
+        }
+      },
+      {
+        "id": "w-mwwagfb7-a87cef19",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT5"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D25"
+        }
+      },
+      {
+        "id": "w-mwwagj0t-c512846f",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT6"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D34"
+        }
+      },
+      {
+        "id": "w-mwwagqlj-469e0d85",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT7"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D33"
+        }
+      },
+      {
+        "id": "w-mwwagy0l-aeb060d7",
+        "from": {
+          "node": "n-mww7u1bp-adc09560",
+          "pin": "OUT8"
+        },
+        "to": {
+          "node": "n-mww7r7rf-802576cd",
+          "pin": "D39"
+        }
+      }
+    ],
+    "log": [
+      {
+        "id": "log-mww7r7rf-c19d3c1d",
+        "at": "2026-11-25T14:23:09.579Z",
+        "kind": "session",
+        "text": "Session “ESP32 DevKit: Blink over Wi-Fi” started"
+      },
+      {
+        "id": "log-mww7r7rf-55a06f1a",
+        "at": "2026-11-25T14:23:09.579Z",
+        "kind": "build",
+        "text": "Added ESP32",
+        "nodes": [
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww7r7rf-152afe62",
+        "at": "2026-11-25T14:23:09.579Z",
+        "kind": "note",
+        "text": "Started from the Component library: Join a Wi-Fi network, print the IP address, then flash the GPIO2 LED when the board is pinged."
+      },
+      {
+        "id": "log-mww7u1bp-fe0529d8",
+        "at": "2026-11-25T14:25:21.205Z",
+        "kind": "build",
+        "text": "Added Line array",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww7u1bq-0d982a4d",
+        "at": "2026-11-25T14:25:21.206Z",
+        "kind": "wire",
+        "text": "Auto-wired Line array to ESP32: GND → GND, VCC → 3V3, 1 → GPIO4",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww7u1bv-a8478122",
+        "at": "2026-11-25T14:25:21.211Z",
+        "kind": "state",
+        "text": "Line array is wired and powered on ESP32 GPIO4",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww7u7s2-0867e5c3",
+        "at": "2026-11-25T14:25:29.570Z",
+        "kind": "build",
+        "text": "Added L298N",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww7u7s3-e4d2927d",
+        "at": "2026-11-25T14:25:29.571Z",
+        "kind": "wire",
+        "text": "Auto-wired L298N to ESP32: +12V → VIN, GND → GND, ENA → GPIO2, IN1 → GPIO15, IN2 → GPIO32, IN3 → GPIO33, IN4 → GPIO25, ENB → GPIO26",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww7u7sl-da2dba5a",
+        "at": "2026-11-25T14:25:29.589Z",
+        "kind": "state",
+        "text": "L298N is wired and powered on ESP32 GPIO2",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww7ui0g-0584aff4",
+        "at": "2026-11-25T14:25:42.832Z",
+        "kind": "build",
+        "text": "Added HC-SR04",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww7ui0h-0029a78f",
+        "at": "2026-11-25T14:25:42.833Z",
+        "kind": "wire",
+        "text": "Auto-wired HC-SR04 to ESP32: VCC → VIN, Trig → GPIO27, Echo → GPIO14, GND → GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww7ui0m-910fcfde",
+        "at": "2026-11-25T14:25:42.838Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww7uzza-e6bc9672",
+        "at": "2026-11-25T14:26:06.118Z",
+        "kind": "build",
+        "text": "Added N20 motor",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww7uzza-1457000a",
+        "at": "2026-11-25T14:26:06.118Z",
+        "kind": "wire",
+        "text": "Auto-wired N20 motor to L298N: M1 → OUT1, M2 → OUT2",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww7uzzk-b29fbfdb",
+        "at": "2026-11-25T14:26:06.128Z",
+        "kind": "state",
+        "text": "N20 motor is wired and powered on ESP32 GPIO2",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww7w89m-ad2a22f6",
+        "at": "2026-11-25T14:27:03.514Z",
+        "kind": "build",
+        "text": "Added 3S LiPo",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww7w89m-2e0de357",
+        "at": "2026-11-25T14:27:03.514Z",
+        "kind": "wire",
+        "text": "Put 3S LiPo in series: + → +12V, − → GND",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww7w89x-f966290f",
+        "at": "2026-11-25T14:27:03.525Z",
+        "kind": "state",
+        "text": "3S LiPo is wired and powered",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww7w89x-aafc7dbf",
+        "at": "2026-11-25T14:27:03.525Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww7wx89-dcced424",
+        "at": "2026-11-25T14:27:35.865Z",
+        "kind": "build",
+        "text": "Added N20 motor 2",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww7wx89-a43bd7d1",
+        "at": "2026-11-25T14:27:35.865Z",
+        "kind": "wire",
+        "text": "Auto-wired N20 motor 2 to L298N: M1 → OUT3, M2 → OUT4",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww7wx8l-b6662e37",
+        "at": "2026-11-25T14:27:35.877Z",
+        "kind": "state",
+        "text": "N20 motor 2 is wired and powered on ESP32 GPIO33",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww7wx8l-1a6cf5d6",
+        "at": "2026-11-25T14:27:35.877Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww84k27-09d0221d",
+        "at": "2026-11-25T14:33:32.047Z",
+        "kind": "build",
+        "text": "Added Limit switch",
+        "nodes": [
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww84k28-5cd86d68",
+        "at": "2026-11-25T14:33:32.048Z",
+        "kind": "wire",
+        "text": "Auto-wired Limit switch to ESP32: NO → GPIO12, COM → GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww84k2j-185a0d1b",
+        "at": "2026-11-25T14:33:32.059Z",
+        "kind": "state",
+        "text": "Limit switch is wired and powered on ESP32 GPIO12",
+        "nodes": [
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww84ucp-0e4e1e85",
+        "at": "2026-11-25T14:33:45.385Z",
+        "kind": "build",
+        "text": "Added TFT display",
+        "nodes": [
+          "n-mww84ucp-e6e926ed"
+        ]
+      },
+      {
+        "id": "log-mww84ucp-ab64e195",
+        "at": "2026-11-25T14:33:45.385Z",
+        "kind": "wire",
+        "text": "Auto-wired TFT display to ESP32: VCC → 3V3, GND → GND, CS → GPIO5 CS, A0 (DC) → GPIO13, SDA (MOSI) → GPIO23 MOSI, SCK → GPIO18 SCK",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww84ucp-e6e926ed"
+        ]
+      },
+      {
+        "id": "log-mww84ud0-9cc71f5a",
+        "at": "2026-11-25T14:33:45.396Z",
+        "kind": "state",
+        "text": "TFT display is wired and powered on ESP32 GPIO5 CS",
+        "nodes": [
+          "n-mww84ucp-e6e926ed"
+        ]
+      },
+      {
+        "id": "log-mww851ua-f766f3ec",
+        "at": "2026-11-25T14:33:55.090Z",
+        "kind": "build",
+        "text": "Removed TFT display"
+      },
+      {
+        "id": "log-mww85dxy-6c41f603",
+        "at": "2026-11-25T14:34:10.774Z",
+        "kind": "run",
+        "text": "Run started with 8 parts"
+      },
+      {
+        "id": "log-mww85e17-b412c0ab",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "Line array reads -25 mm (ESP32 GPIO4)",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww85e17-7b3bfbe3",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "L298N reads 11.1 V (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww85e17-bdee0301",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "HC-SR04 reads 30.0 cm (ESP32 GPIO27)",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww85e17-8d009e7e",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "N20 motor reads 9.4 rad/s (90 rpm) (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww85e17-2ad8210d",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "3S LiPo reads 11.08 V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww85e17-2cb431f5",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "N20 motor 2 reads 9.4 rad/s (90 rpm) (ESP32 GPIO33)",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww85e17-ef72d5ad",
+        "at": "2026-11-25T14:34:10.891Z",
+        "kind": "run",
+        "text": "Limit switch reads Pressed (ESP32 GPIO12)",
+        "nodes": [
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww85f1s-9982fea3",
+        "at": "2026-11-25T14:34:12.208Z",
+        "kind": "run",
+        "text": "Run stopped after 1.3 s: Line array line position -25.0–-5.0 mm; L298N came on; HC-SR04 distance 30.0–35.1 cm; N20 motor speed 9.4–16.4 rad/s (157 rpm); 3S LiPo came on; N20 motor 2 speed 9.4–16.4 rad/s (157 rpm); Limit switch came on"
+      },
+      {
+        "id": "log-mww85i1o-3de927e8",
+        "at": "2026-11-25T14:34:16.092Z",
+        "kind": "run",
+        "text": "Run started with 8 parts"
+      },
+      {
+        "id": "log-mww85i1x-20f30fea",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "Line array reads -5 mm (ESP32 GPIO4)",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-2dda303b",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "L298N reads 11.1 V (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-2e213388",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "HC-SR04 reads 35.1 cm (ESP32 GPIO27)",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-db9ebbcf",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "N20 motor reads 16.4 rad/s (157 rpm) (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-95f2bf18",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "3S LiPo reads 11.08 V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-ca0e11cb",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "N20 motor 2 reads 16.4 rad/s (157 rpm) (ESP32 GPIO33)",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww85i1x-29661c7f",
+        "at": "2026-11-25T14:34:16.101Z",
+        "kind": "run",
+        "text": "Limit switch reads Pressed (ESP32 GPIO12)",
+        "nodes": [
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww85jvz-c1bf067c",
+        "at": "2026-11-25T14:34:18.479Z",
+        "kind": "run",
+        "text": "Run stopped after 2.3 s: Line array line position -5.0–25.0 mm; L298N came on; HC-SR04 distance 35.1–43.2 cm; N20 motor speed 16.4–23.5 rad/s (224 rpm); 3S LiPo came on; N20 motor 2 speed 16.4–23.5 rad/s (224 rpm); Limit switch switched on 2 times"
+      },
+      {
+        "id": "log-mww85oad-01b0f4c0",
+        "at": "2026-11-25T14:34:24.181Z",
+        "kind": "run",
+        "text": "Run started with 8 parts"
+      },
+      {
+        "id": "log-mww85oaj-aecad94a",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "Line array reads 20 mm (ESP32 GPIO4)",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-b8985d97",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "L298N reads 11.1 V (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-85cfb74a",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "HC-SR04 reads 43.2 cm (ESP32 GPIO27)",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-04fa1cf2",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "N20 motor reads 23.5 rad/s (224 rpm) (ESP32 GPIO2)",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-24971a4a",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "3S LiPo reads 11.08 V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-5c4800cb",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "N20 motor 2 reads 23.5 rad/s (224 rpm) (ESP32 GPIO33)",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mww85oaj-41632db5",
+        "at": "2026-11-25T14:34:24.187Z",
+        "kind": "run",
+        "text": "Limit switch reads Pressed (ESP32 GPIO12)",
+        "nodes": [
+          "n-mww84k27-55384201"
+        ]
+      },
+      {
+        "id": "log-mww85wme-c8e24d13",
+        "at": "2026-11-25T14:34:34.982Z",
+        "kind": "run",
+        "text": "Run stopped after 10.7 s: Line array line position -25.0–25.0 mm; L298N came on; HC-SR04 distance 35.6–50.0 cm; N20 motor speed 9.6–23.6 rad/s (162 rpm); 3S LiPo came on; N20 motor 2 speed 9.6–23.6 rad/s (162 rpm); Limit switch switched on 4 times"
+      },
+      {
+        "id": "log-mww8739i-3fc517f9",
+        "at": "2026-11-25T14:35:30.246Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO17 TX2 → Line array 2",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww873a2-3b3926d1",
+        "at": "2026-11-25T14:35:30.266Z",
+        "kind": "fault",
+        "text": "Warning on Line array, ESP32: GPIO17 TX2 can't read analog",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww8765p-8b170d3b",
+        "at": "2026-11-25T14:35:33.997Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8765w-a63dbc2c",
+        "at": "2026-11-25T14:35:34.004Z",
+        "kind": "fix",
+        "text": "Fixed on Line array, ESP32: GPIO17 TX2 can't read analog",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww878c4-b08151a3",
+        "at": "2026-11-25T14:35:36.820Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww878cd-38543f5e",
+        "at": "2026-11-25T14:35:36.829Z",
+        "kind": "fault",
+        "text": "Fault on Line array: No signal pin connected",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww87aag-78b391c8",
+        "at": "2026-11-25T14:35:39.352Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww87aam-95bce939",
+        "at": "2026-11-25T14:35:39.358Z",
+        "kind": "fault",
+        "text": "Fault on Line array: No power",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww87die-22a2b28a",
+        "at": "2026-11-25T14:35:43.526Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww87dim-85292a13",
+        "at": "2026-11-25T14:35:43.534Z",
+        "kind": "fix",
+        "text": "Fixed on Line array: No signal pin connected",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww87dim-0452c36b",
+        "at": "2026-11-25T14:35:43.534Z",
+        "kind": "fix",
+        "text": "Fixed on Line array: No power",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mww88ulh-f2d26e2c",
+        "at": "2026-11-25T14:36:52.325Z",
+        "kind": "build",
+        "text": "Removed Limit switch"
+      },
+      {
+        "id": "log-mww8ae9n-9c3f7cbc",
+        "at": "2026-11-25T14:38:04.475Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8aea3-3edcee72",
+        "at": "2026-11-25T14:38:04.491Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: Echo isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8aea4-f6875c71",
+        "at": "2026-11-25T14:38:04.492Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww8afg7-ed245d16",
+        "at": "2026-11-25T14:38:06.007Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8afge-7839ce3b",
+        "at": "2026-11-25T14:38:06.014Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8aghr-4c36d7c2",
+        "at": "2026-11-25T14:38:07.359Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8aghy-7022f245",
+        "at": "2026-11-25T14:38:07.366Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: Trig isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8ahof-8a19b461",
+        "at": "2026-11-25T14:38:08.895Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8ahom-ca33bb17",
+        "at": "2026-11-25T14:38:08.902Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: Trig isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8ahom-b4d84b6e",
+        "at": "2026-11-25T14:38:08.902Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: Echo isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8ahom-65475ec5",
+        "at": "2026-11-25T14:38:08.902Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mww8apjt-f7f7ded9",
+        "at": "2026-11-25T14:38:19.097Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8aqij-0c96aa45",
+        "at": "2026-11-25T14:38:20.347Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8avht-0fad6f96",
+        "at": "2026-11-25T14:38:26.801Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8awnj-ae973f42",
+        "at": "2026-11-25T14:38:28.303Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8axon-1a306f41",
+        "at": "2026-11-25T14:38:29.639Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8ayy9-2061278f",
+        "at": "2026-11-25T14:38:31.281Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8ayyg-5e4eee00",
+        "at": "2026-11-25T14:38:31.288Z",
+        "kind": "fault",
+        "text": "Fault on L298N: No signal pin connected",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b021-bc9fc0bb",
+        "at": "2026-11-25T14:38:32.713Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b36x-fedf3776",
+        "at": "2026-11-25T14:38:36.777Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b374-c1c60840",
+        "at": "2026-11-25T14:38:36.784Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b374-f90fdf0f",
+        "at": "2026-11-25T14:38:36.784Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b4ix-237dfa38",
+        "at": "2026-11-25T14:38:38.505Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b4j3-2126fe93",
+        "at": "2026-11-25T14:38:38.511Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b5ib-17d09edc",
+        "at": "2026-11-25T14:38:39.779Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b5ih-af647e5b",
+        "at": "2026-11-25T14:38:39.785Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b5ih-9fa79d0e",
+        "at": "2026-11-25T14:38:39.785Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b6nl-c3828ad6",
+        "at": "2026-11-25T14:38:41.265Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b6nr-ad9d9816",
+        "at": "2026-11-25T14:38:41.271Z",
+        "kind": "fault",
+        "text": "Fault on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b7yr-4db8805b",
+        "at": "2026-11-25T14:38:42.963Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b7yx-d5708de6",
+        "at": "2026-11-25T14:38:42.969Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b9ex-4322b8dc",
+        "at": "2026-11-25T14:38:44.841Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww8b9f3-59a83cc7",
+        "at": "2026-11-25T14:38:44.847Z",
+        "kind": "fix",
+        "text": "Fixed on L298N: No signal pin connected",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww8b9f3-b6bebed1",
+        "at": "2026-11-25T14:38:44.847Z",
+        "kind": "fix",
+        "text": "Fixed on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9jo75-8d0a7c2b",
+        "at": "2026-11-25T15:13:16.865Z",
+        "kind": "build",
+        "text": "Duplicated 3S LiPo 2",
+        "nodes": [
+          "n-mww9jo75-0a47b2ff"
+        ]
+      },
+      {
+        "id": "log-mww9ln7t-063d26ad",
+        "at": "2026-11-25T15:14:48.905Z",
+        "kind": "wire",
+        "text": "Wired 3S LiPo + → L298N +12V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9ln80-e2f71daa",
+        "at": "2026-11-25T15:14:48.912Z",
+        "kind": "state",
+        "text": "3S LiPo is wired and powered",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww9ln81-df79a8e0",
+        "at": "2026-11-25T15:14:48.913Z",
+        "kind": "fault",
+        "text": "Fault on L298N: No signal pin connected",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9ln81-76d666ce",
+        "at": "2026-11-25T15:14:48.913Z",
+        "kind": "fault",
+        "text": "Fault on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9n4cz-6449e30b",
+        "at": "2026-11-25T15:15:57.779Z",
+        "kind": "wire",
+        "text": "Wired 3S LiPo − → L298N GND",
+        "nodes": [
+          "n-mww7w89m-9fa20bef",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9n4d3-4cc4bcda",
+        "at": "2026-11-25T15:15:57.783Z",
+        "kind": "fix",
+        "text": "Fixed on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9ng8y-e681859f",
+        "at": "2026-11-25T15:16:13.186Z",
+        "kind": "wire",
+        "text": "Wired ESP32 VIN → L298N +5V",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9no6z-1d06e74c",
+        "at": "2026-11-25T15:16:23.483Z",
+        "kind": "build",
+        "text": "Removed ESP32"
+      },
+      {
+        "id": "log-mww9ntpr-20e79fbc",
+        "at": "2026-11-25T15:16:30.639Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww9o57j-64a4ebfd",
+        "at": "2026-11-25T15:16:45.535Z",
+        "kind": "wire",
+        "text": "Wired ESP32 VIN → L298N +5V",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9pwj2-c86e15ff",
+        "at": "2026-11-25T15:18:07.598Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO5 CS → L298N ENA",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9pwjd-ebbed97e",
+        "at": "2026-11-25T15:18:07.609Z",
+        "kind": "state",
+        "text": "L298N is wired and powered on ESP32 GPIO5 CS",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9pwjd-1d610176",
+        "at": "2026-11-25T15:18:07.609Z",
+        "kind": "fault",
+        "text": "Warning on L298N, ESP32: No common ground with the board",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww9pwjd-52dcdf08",
+        "at": "2026-11-25T15:18:07.609Z",
+        "kind": "fix",
+        "text": "Fixed on L298N: No signal pin connected",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9qb62-e6830748",
+        "at": "2026-11-25T15:18:26.570Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO18 SCK → L298N IN1",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9qet4-0d5e76b6",
+        "at": "2026-11-25T15:18:31.288Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO19 MISO → L298N IN2",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9rqe0-b501a642",
+        "at": "2026-11-25T15:19:32.952Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO23 MOSI → L298N IN3",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9ru9s-6737ab4d",
+        "at": "2026-11-25T15:19:37.984Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO22 SCL → L298N IN4",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9s234-655f78c1",
+        "at": "2026-11-25T15:19:48.112Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO22 SCL → L298N IN4",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9sdp6-ff7c8b68",
+        "at": "2026-11-25T15:20:03.162Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO22 SCL → L298N IN4",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9sope-fdcbf488",
+        "at": "2026-11-25T15:20:17.426Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO21 SDA → L298N ENB",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9v0qs-e4f38623",
+        "at": "2026-11-25T15:22:06.340Z",
+        "kind": "build",
+        "text": "Added ESP32 2",
+        "nodes": [
+          "n-mww9v0qs-19825f4b"
+        ]
+      },
+      {
+        "id": "log-mww9wmco-a3bf6d59",
+        "at": "2026-11-25T15:23:21.000Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO17 TX2 → N20 motor C1",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9wmcy-6ba69c77",
+        "at": "2026-11-25T15:23:21.010Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9wsqv-f0db251d",
+        "at": "2026-11-25T15:23:29.287Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO16 RX2 → N20 motor C2",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9xn1k-4b3af0f8",
+        "at": "2026-11-25T15:24:08.552Z",
+        "kind": "wire",
+        "text": "Wired N20 motor ENC VCC → ESP32 GND",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww9y6pv-a4145211",
+        "at": "2026-11-25T15:24:34.051Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GND → N20 motor ENC GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9yghi-f93aec19",
+        "at": "2026-11-25T15:24:46.710Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GND → N20 motor ENC GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9yskk-3f4507b3",
+        "at": "2026-11-25T15:25:02.372Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GND → N20 motor ENC GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9z0j2-d5ca091d",
+        "at": "2026-11-25T15:25:12.686Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww9z2ec-95413fe8",
+        "at": "2026-11-25T15:25:15.108Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mww9z9rp-1ed95848",
+        "at": "2026-11-25T15:25:24.661Z",
+        "kind": "wire",
+        "text": "Wired L298N GND → ESP32 3V3",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww9z9s1-166a6591",
+        "at": "2026-11-25T15:25:24.673Z",
+        "kind": "fault",
+        "text": "Fault on ESP32, L298N, 3S LiPo: Short circuit: power wired straight to ground",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b",
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww9z9s1-45ae015e",
+        "at": "2026-11-25T15:25:24.673Z",
+        "kind": "fault",
+        "text": "Fault on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9z9s1-9e4e2718",
+        "at": "2026-11-25T15:25:24.673Z",
+        "kind": "fix",
+        "text": "Fixed on L298N, ESP32: No common ground with the board",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww9zcb4-a66de6ee",
+        "at": "2026-11-25T15:25:27.952Z",
+        "kind": "state",
+        "text": "L298N is wired and powered on ESP32 GPIO5 CS",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9zcb4-966235cb",
+        "at": "2026-11-25T15:25:27.952Z",
+        "kind": "state",
+        "text": "3S LiPo is wired and powered",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww9zcb4-f8c95887",
+        "at": "2026-11-25T15:25:27.952Z",
+        "kind": "fault",
+        "text": "Warning on L298N, ESP32: No common ground with the board",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mww9zcb4-1f57d136",
+        "at": "2026-11-25T15:25:27.952Z",
+        "kind": "fix",
+        "text": "Fixed on ESP32, L298N, 3S LiPo: Short circuit: power wired straight to ground",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7u7s2-df75555b",
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mww9zcb4-972063fe",
+        "at": "2026-11-25T15:25:27.952Z",
+        "kind": "fix",
+        "text": "Fixed on L298N: No path to ground",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9zlci-6be25b00",
+        "at": "2026-11-25T15:25:39.666Z",
+        "kind": "wire",
+        "text": "Wired ESP32 3V3 → N20 motor ENC VCC",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9zqtw-adf4ccbf",
+        "at": "2026-11-25T15:25:46.772Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GND → N20 motor ENC GND",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9zzgu-eabefef8",
+        "at": "2026-11-25T15:25:57.966Z",
+        "kind": "wire",
+        "text": "Wired L298N OUT3 → N20 motor M1",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mww9zzh2-08042d2a",
+        "at": "2026-11-25T15:25:57.974Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mww9zzh2-f36d49c4",
+        "at": "2026-11-25T15:25:57.974Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mwwa02uo-f49c6b64",
+        "at": "2026-11-25T15:26:02.352Z",
+        "kind": "wire",
+        "text": "Wired L298N OUT4 → N20 motor M2",
+        "nodes": [
+          "n-mww7u7s2-df75555b",
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mwwa02v3-7aca012b",
+        "at": "2026-11-25T15:26:02.367Z",
+        "kind": "state",
+        "text": "N20 motor is wired and powered on ESP32 GPIO23 MOSI",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mwwa02v3-424c35f4",
+        "at": "2026-11-25T15:26:02.367Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa02v3-cf9f4d99",
+        "at": "2026-11-25T15:26:02.367Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7uzza-0ba0413d",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa0vty-c8456c69",
+        "at": "2026-11-25T15:26:39.910Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 M1 → L298N OUT1",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa0vu9-1af75d6b",
+        "at": "2026-11-25T15:26:39.921Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa0z12-a60ee383",
+        "at": "2026-11-25T15:26:44.054Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa17yw-f622751f",
+        "at": "2026-11-25T15:26:55.640Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 M1 → L298N OUT1",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa17z3-4997bd5d",
+        "at": "2026-11-25T15:26:55.647Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa1g5n-7a7cad16",
+        "at": "2026-11-25T15:27:06.251Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa2zre-bb3a9d75",
+        "at": "2026-11-25T15:28:18.314Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 ENC VCC → ESP32 3V3",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa2zrp-5b1d7a51",
+        "at": "2026-11-25T15:28:18.325Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa36so-8fe1d336",
+        "at": "2026-11-25T15:28:27.432Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 ENC GND → ESP32 GND",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa3s0g-a6f66272",
+        "at": "2026-11-25T15:28:54.928Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 C1 → ESP32 GPIO4",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa3y1i-1011a041",
+        "at": "2026-11-25T15:29:02.742Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 C2 → ESP32 GPIO2",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa4bq0-51b61e38",
+        "at": "2026-11-25T15:29:20.472Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa4v0k-dc74a2ca",
+        "at": "2026-11-25T15:29:45.476Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 ENC VCC → ESP32 3V3",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa4v0s-b3d2a1bf",
+        "at": "2026-11-25T15:29:45.484Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa4y96-e5174ac4",
+        "at": "2026-11-25T15:29:49.674Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 ENC GND → ESP32 GND",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa53ck-9555acf2",
+        "at": "2026-11-25T15:29:56.276Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 M1 → L298N OUT1",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa53cp-e99a9b40",
+        "at": "2026-11-25T15:29:56.281Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa53cp-a57e2fad",
+        "at": "2026-11-25T15:29:56.281Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2: Not wired to a driver yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa55ag-63369403",
+        "at": "2026-11-25T15:29:58.792Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 M2 → N20 motor 2 M1",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa5aiw-9ccee24c",
+        "at": "2026-11-25T15:30:05.576Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 M2 → L298N OUT2",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa5aj2-f9bda947",
+        "at": "2026-11-25T15:30:05.582Z",
+        "kind": "state",
+        "text": "N20 motor 2 is wired and powered on ESP32 GPIO5 CS",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwa5aj2-4ab20340",
+        "at": "2026-11-25T15:30:05.582Z",
+        "kind": "fault",
+        "text": "Warning on N20 motor 2, L298N: 11.1 V on a 6 V motor",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa5aj2-8a4c2b34",
+        "at": "2026-11-25T15:30:05.582Z",
+        "kind": "fix",
+        "text": "Fixed on N20 motor 2, L298N: No supply through its switch yet",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwa5ed2-4fed165a",
+        "at": "2026-11-25T15:30:10.550Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 C1 → ESP32 GPIO4",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa5ib7-6e507731",
+        "at": "2026-11-25T15:30:15.667Z",
+        "kind": "wire",
+        "text": "Wired N20 motor 2 C2 → ESP32 GPIO2",
+        "nodes": [
+          "n-mww7wx89-2b51053a",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa69hg-b1f497ff",
+        "at": "2026-11-25T15:30:50.884Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO13 → HC-SR04 Echo",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa69ho-adc9b1ae",
+        "at": "2026-11-25T15:30:50.892Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: Trig isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa69hp-709fdb58",
+        "at": "2026-11-25T15:30:50.893Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa69hp-2a649b0d",
+        "at": "2026-11-25T15:30:50.893Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa69hp-9d6f28d5",
+        "at": "2026-11-25T15:30:50.893Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: No path to ground",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6do4-b25bd93e",
+        "at": "2026-11-25T15:30:56.308Z",
+        "kind": "wire",
+        "text": "Wired ESP32 GPIO12 → HC-SR04 Trig",
+        "nodes": [
+          "n-mww7r7rf-802576cd",
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6doa-e5f7393f",
+        "at": "2026-11-25T15:30:56.314Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: Trig isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6guq-2536765e",
+        "at": "2026-11-25T15:31:00.434Z",
+        "kind": "wire",
+        "text": "Removed a wire"
+      },
+      {
+        "id": "log-mwwa6guy-f913f0e9",
+        "at": "2026-11-25T15:31:00.442Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: Echo isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6guy-aa391f71",
+        "at": "2026-11-25T15:31:00.442Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa6je0-d0063fc8",
+        "at": "2026-11-25T15:31:03.720Z",
+        "kind": "wire",
+        "text": "Wired HC-SR04 Echo → ESP32 GPIO13",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa6jec-4d12f528",
+        "at": "2026-11-25T15:31:03.732Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa6jec-fabf38b3",
+        "at": "2026-11-25T15:31:03.732Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: Echo isn't connected",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6p5w-ec21ba89",
+        "at": "2026-11-25T15:31:11.204Z",
+        "kind": "wire",
+        "text": "Wired HC-SR04 GND → ESP32 GND",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa6p63-f36cab47",
+        "at": "2026-11-25T15:31:11.211Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: No path to ground",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa6u7p-afbe6a2b",
+        "at": "2026-11-25T15:31:17.749Z",
+        "kind": "wire",
+        "text": "Wired HC-SR04 VCC → ESP32 VIN",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa6u7y-6e75ff35",
+        "at": "2026-11-25T15:31:17.758Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa7aq1-484bfeee",
+        "at": "2026-11-25T15:31:39.145Z",
+        "kind": "fault",
+        "text": "Fault on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa7m4n-a00fb7b7",
+        "at": "2026-11-25T15:31:53.927Z",
+        "kind": "wire",
+        "text": "Wired HC-SR04 VCC → ESP32 3V3",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa7m4z-e72358f0",
+        "at": "2026-11-25T15:31:53.939Z",
+        "kind": "state",
+        "text": "HC-SR04 is wired and powered on ESP32 GPIO12",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa7m4z-5d530146",
+        "at": "2026-11-25T15:31:53.939Z",
+        "kind": "fault",
+        "text": "Warning on HC-SR04: Underpowered at 3.3 V",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwa7m4z-26f462e0",
+        "at": "2026-11-25T15:31:53.939Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04, ESP32: 5 V output into a 3.3 V pin",
+        "nodes": [
+          "n-mww7ui0g-1ce00264",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwa7m4z-ec1e12ce",
+        "at": "2026-11-25T15:31:53.939Z",
+        "kind": "fix",
+        "text": "Fixed on HC-SR04: No power",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwab83i-f7ab6eba",
+        "at": "2026-11-25T15:34:42.366Z",
+        "kind": "wire",
+        "text": "Wired Line array VCC → ESP32 3V3",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwab83z-a9e823b7",
+        "at": "2026-11-25T15:34:42.383Z",
+        "kind": "fault",
+        "text": "Fault on Line array: No signal pin connected",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwab83z-67030835",
+        "at": "2026-11-25T15:34:42.383Z",
+        "kind": "fault",
+        "text": "Fault on Line array: No path to ground",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwabfpj-3007d280",
+        "at": "2026-11-25T15:34:52.231Z",
+        "kind": "wire",
+        "text": "Wired Line array GND → ESP32 GND",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwabfpr-7760f059",
+        "at": "2026-11-25T15:34:52.239Z",
+        "kind": "fix",
+        "text": "Fixed on Line array: No path to ground",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwadf1x-cd170702",
+        "at": "2026-11-25T15:36:24.693Z",
+        "kind": "wire",
+        "text": "Wired Line array 1 → ESP32 GPIO27",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwadf27-13895d98",
+        "at": "2026-11-25T15:36:24.703Z",
+        "kind": "state",
+        "text": "Line array is wired and powered on ESP32 GPIO27",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwadf28-a91e994e",
+        "at": "2026-11-25T15:36:24.704Z",
+        "kind": "fix",
+        "text": "Fixed on Line array: No signal pin connected",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwafbe7-2afb7531",
+        "at": "2026-11-25T15:37:53.263Z",
+        "kind": "wire",
+        "text": "Wired Line array 2 → ESP32 GPIO32",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwafu59-281305df",
+        "at": "2026-11-25T15:38:17.565Z",
+        "kind": "wire",
+        "text": "Wired Line array 3 → ESP32 GPIO26",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwag6el-b2c56c9c",
+        "at": "2026-11-25T15:38:33.453Z",
+        "kind": "wire",
+        "text": "Wired Line array 4 → ESP32 GPIO35",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwagfb7-2ab935a4",
+        "at": "2026-11-25T15:38:44.995Z",
+        "kind": "wire",
+        "text": "Wired Line array 5 → ESP32 GPIO25",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwagj0t-1df79e34",
+        "at": "2026-11-25T15:38:49.805Z",
+        "kind": "wire",
+        "text": "Wired Line array 6 → ESP32 GPIO34",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwagqlj-114aaa46",
+        "at": "2026-11-25T15:38:59.623Z",
+        "kind": "wire",
+        "text": "Wired Line array 7 → ESP32 GPIO33",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwagy0l-8053c58b",
+        "at": "2026-11-25T15:39:09.237Z",
+        "kind": "wire",
+        "text": "Wired Line array 8 → ESP32 GPIO39 VN",
+        "nodes": [
+          "n-mww7u1bp-adc09560",
+          "n-mww7r7rf-802576cd"
+        ]
+      },
+      {
+        "id": "log-mwwakrqd-5e7a53e4",
+        "at": "2026-11-25T15:42:07.717Z",
+        "kind": "run",
+        "text": "Run started with 7 parts"
+      },
+      {
+        "id": "log-mwwakrqr-5a8bf0e1",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "Line array reads 19 mm (ESP32 GPIO27)",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwakrqr-5148660f",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "L298N reads 11.1 V (ESP32 GPIO5 CS)",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwakrqr-c97beea5",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "HC-SR04 reads 35.6 cm (ESP32 GPIO12)",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwakrqr-f620355d",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "N20 motor reads 17.0 rad/s (162 rpm) (ESP32 GPIO23 MOSI)",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mwwakrqr-20d597c6",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "3S LiPo reads 11.08 V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mwwakrqr-aa1325ac",
+        "at": "2026-11-25T15:42:07.731Z",
+        "kind": "run",
+        "text": "N20 motor 2 reads 17.0 rad/s (162 rpm) (ESP32 GPIO5 CS)",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwalewy-6fc3f5e5",
+        "at": "2026-11-25T15:42:37.762Z",
+        "kind": "run",
+        "text": "Run stopped after 30.0 s: Line array line position -25.0–25.0 mm; L298N came on; HC-SR04 distance 30.0–50.0 cm; N20 motor speed 9.4–23.6 rad/s (212 rpm); 3S LiPo came on; N20 motor 2 speed 9.4–23.6 rad/s (212 rpm)"
+      },
+      {
+        "id": "log-mwwaltjq-d3b73f01",
+        "at": "2026-11-25T15:42:56.726Z",
+        "kind": "run",
+        "text": "Run started with 7 parts"
+      },
+      {
+        "id": "log-mwwaltk3-6d765ce2",
+        "at": "2026-11-25T15:42:56.739Z",
+        "kind": "run",
+        "text": "Line array reads 19 mm (ESP32 GPIO27)",
+        "nodes": [
+          "n-mww7u1bp-adc09560"
+        ]
+      },
+      {
+        "id": "log-mwwaltk4-885f0db2",
+        "at": "2026-11-25T15:42:56.740Z",
+        "kind": "run",
+        "text": "L298N reads 11.1 V (ESP32 GPIO5 CS)",
+        "nodes": [
+          "n-mww7u7s2-df75555b"
+        ]
+      },
+      {
+        "id": "log-mwwaltk4-f9873924",
+        "at": "2026-11-25T15:42:56.740Z",
+        "kind": "run",
+        "text": "HC-SR04 reads 40.7 cm (ESP32 GPIO12)",
+        "nodes": [
+          "n-mww7ui0g-1ce00264"
+        ]
+      },
+      {
+        "id": "log-mwwaltk4-7c9221cd",
+        "at": "2026-11-25T15:42:56.740Z",
+        "kind": "run",
+        "text": "N20 motor reads 22.2 rad/s (212 rpm) (ESP32 GPIO23 MOSI)",
+        "nodes": [
+          "n-mww7uzza-0ba0413d"
+        ]
+      },
+      {
+        "id": "log-mwwaltk4-1563fc7f",
+        "at": "2026-11-25T15:42:56.740Z",
+        "kind": "run",
+        "text": "3S LiPo reads 11.08 V",
+        "nodes": [
+          "n-mww7w89m-9fa20bef"
+        ]
+      },
+      {
+        "id": "log-mwwaltk4-dea27c82",
+        "at": "2026-11-25T15:42:56.740Z",
+        "kind": "run",
+        "text": "N20 motor 2 reads 22.2 rad/s (212 rpm) (ESP32 GPIO5 CS)",
+        "nodes": [
+          "n-mww7wx89-2b51053a"
+        ]
+      },
+      {
+        "id": "log-mwwalx4w-5dbe1a61",
+        "at": "2026-11-25T15:43:01.376Z",
+        "kind": "run",
+        "text": "Run stopped after 4.6 s: Line array line position -25.0–25.0 mm; L298N came on; HC-SR04 distance 30.1–40.7 cm; N20 motor speed 9.5–22.2 rad/s (178 rpm); 3S LiPo came on; N20 motor 2 speed 9.5–22.2 rad/s (178 rpm)"
+      }
+    ],
+    "view": "top",
+    "runMs": 48900,
+    "inputs": {},
+    "units": 2,
+    "runtime": null
+  }
+}
